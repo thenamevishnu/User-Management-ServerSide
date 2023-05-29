@@ -65,7 +65,6 @@ const authentication = (req, res, next)=>{
 const profile = async (req, res, next) => {
     try{
         const {id}=req.body
-        console.log(req.file);
         const imgUrl=req.file.filename
         await UDB.updateOne({_id:id},{$set:{
             Dp:imgUrl

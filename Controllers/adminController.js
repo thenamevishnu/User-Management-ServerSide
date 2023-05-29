@@ -47,6 +47,37 @@ const getUsers = async (req, res, next) =>{
     }
 }
 
+const editUser = async (req, res, next) => {
+    try{
+        const {user , Id} = req.body
+        const regex = new RegExp(""+user+"","i")
+        const exist = await UDB.findOne({_id:{$ne:Id},Username:{$regex:regex}})
+        if(exist){
+            res.json({exist:true,response:"Username already exist!"})
+        }else{
+            await UDB.updateOne({_id:Id},{$set:{Username:user}})
+            res.json({exist:false})
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
+
+const deleteUser = async (req, res, next) => {
+    try{
+        const { Id , Username } = req.body
+        const response = await UDB.findOne({_id:Id,Username:Username})
+        if(!response){
+            res.json({exist:false,response:"User not found!"})
+        }else{
+            await UDB.deleteOne({_id:Id,Username:Username})
+            res.json({exist:true})
+        }
+    }catch(error){
+        console.log(error);
+    }
+}
+
 module.exports = {
-    auth,login,getUsers
+    auth,login,getUsers,editUser,deleteUser
 }
