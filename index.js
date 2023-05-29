@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const userRouter = require('./Routes/user')
 const adminRouter = require('./Routes/admin')
+require("dotenv").config()
 const app=express()
 
 app.listen(3001,()=>{
@@ -13,12 +14,12 @@ app.listen(3001,()=>{
 app.use(cookieParser())
 app.use(express.json());
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: [process.env.origin],
     methods: ["GET", "POST"],
     credentials: true
 }))
 
-mongoose.connect("mongodb://127.0.0.1:27017/user-management", {
+mongoose.connect(process.env.db_url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
