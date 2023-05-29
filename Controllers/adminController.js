@@ -49,13 +49,13 @@ const getUsers = async (req, res, next) =>{
 
 const editUser = async (req, res, next) => {
     try{
-        const {user , Id} = req.body
+        const {user , editId} = req.body
         const regex = new RegExp(""+user+"","i")
-        const exist = await UDB.findOne({_id:{$ne:Id},Username:{$regex:regex}})
+        const exist = await UDB.findOne({_id:{$ne:editId},Username:{$regex:regex}})
         if(exist){
             res.json({exist:true,response:"Username already exist!"})
         }else{
-            await UDB.updateOne({_id:Id},{$set:{Username:user}})
+            await UDB.updateOne({_id:editId},{$set:{Username:user}})
             res.json({exist:false})
         }
     }catch(error){
